@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+
+<head>
+    <metal:block fill-slot="style_slot">
+        <link rel="stylesheet" type="text/css" 
+            tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+            tal:attributes="href string:${navroot}/++resource++example.conference/conference.css"
+            />
+    </metal:block>
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 class="documentFirstHeading" tal:content="context/title" />
+        
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <p class="documentDescription" tal:content="context/description" />
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <div tal:define="picture nocall:context/picture"
+             tal:condition="nocall:picture"
+             class="conference-presenter-image">
+            <img tal:attributes="src string:${context/absolute_url}/@@download/picture/${picture/filename};
+                                 height picture/_height | nothing;
+                                 width picture/_width | nothing;"
+                />
+        </div>
+
+        <div tal:content="structure context/bio" />
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

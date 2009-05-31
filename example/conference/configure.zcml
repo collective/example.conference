@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="example.conference">
+
+    <include package="collective.autopermission" />
+    
+    <include package="plone.principalsource" />
+    <include package="plone.namedfile" />
+    <include package="plone.formwidget.namedfile" />
+    
+    <include file="permissions.zcml" />
+
+    <!-- Grok the package to initialise schema interfaces and content classes -->
+    <grok:grok package="." />
+
+    <!-- Register an extension profile to make the product installable -->
+    <genericsetup:registerProfile
+        name="default"
+        title="Conference management"
+        description="A Dexterity demo"
+        directory="profiles/default"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+        
+</configure>

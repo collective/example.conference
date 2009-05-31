@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="example.conference">
+
+    <permission
+        id="example.conference.AddSession"
+        title="example.conference: Add session"
+        />
+
+    <permission
+        id="example.conference.ModifyTrack"
+        title="example.conference: Modify track"
+        />
+        
+</configure>

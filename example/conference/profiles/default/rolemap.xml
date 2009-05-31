@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<rolemap>
+  <permissions>
+    <permission name="example.conference: Add session" acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+      <role name="Member"/>
+      <role name="Contributor"/>
+    </permission>
+    <permission name="example.conference: Modify track" acquire="True">
+      <role name="Manager"/>
+      <role name="Reviewer"/>
+    </permission>
+  </permissions>
+</rolemap>

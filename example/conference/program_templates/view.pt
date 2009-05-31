@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <img style="float: left; margin-right: 2px; margin-top: 2px"
+             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
+             tal:attributes="src string:${navroot}/++resource++example.conference/program.gif"
+             />
+
+        <h1 class="documentFirstHeading" tal:content="context/title" />
+            
+        <div class="discreet">
+            <tal:block condition="context/start">
+                <span i18n:translate="label_from">From:</span>
+                <span tal:content="python:context.start.strftime('%x %X')" />
+            </tal:block>
+            <tal:block condition="context/end">
+                <span i18n:translate="label_to">To:</span>
+                <span tal:content="python:context.end.strftime('%x %X')" />
+            </tal:block>
+        </div>
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <p class="documentDescription" tal:content="context/description" />
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <div tal:content="structure context/details" />
+        
+        <h2 i18n:translate="heading_sessions">Sessions</h2>
+        <dl>
+            <tal:block repeat="session view/sessions">
+                <dt>
+                    <a tal:attributes="href session/getURL"
+                       tal:content="session/Title" />
+                </dt>
+                <dd tal:content="session/Description" />
+            </tal:block>
+        </dl>
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

@@ -1,6 +1,14 @@
 import unittest
 import datetime
 
+from zope.component import createObject
+from zope.component import queryUtility
+
+from plone.dexterity.interfaces import IDexterityFTI
+
+from Products.PloneTestCase.ptc import PloneTestCase
+from example.conference.tests.layer import Layer
+
 from example.conference.program import start_default_value
 from example.conference.program import end_default_value
 from example.conference.program import IProgram
@@ -9,9 +17,7 @@ from example.conference.program import StartBeforeEnd
 class MockProgram(object):
     pass
 
-class ProgramTest(unittest.TestCase):
-    """Unit test for the Program type
-    """
+class TestProgramUnit(unittest.TestCase):
     
     def test_start_defaults(self):
         data = MockProgram()
@@ -57,6 +63,37 @@ class ProgramTest(unittest.TestCase):
             IProgram.validateInvariants(data)
         except:
             self.fail()
+
+class TestProgramIntegration(PloneTestCase):
+    
+    layer = Layer
+    
+    def test_adding(self):
+        self.folder.invokeFactory('example.conference.program', 'program1')
+        p1 = self.folder['program1']
+        self.failUnless(IProgram.providedBy(p1))
+    
+    def test_fti(self):
+        fti = queryUtility(IDexterityFTI, name='example.conference.program')
+        self.assertNotEquals(None, fti)
+    
+    def test_schema(self):
+        fti = queryUtility(IDexterityFTI, name='example.conference.program')
+        schema = fti.lookup_schema()
+        self.assertEquals(IProgram, schema)
+    
+    def test_factory(self):
+        fti = queryUtility(IDexterityFTI, name='example.conference.program')
+        factory = fti.factory
+        new_object = createObject(factory)
+        self.failUnless(IProgram.providedBy(new_object))
+    
+    def test_view(self):
+        self.folder.invokeFactory('example.conference.program', 'program1')
+        p1 = self.folder['program1']
+        view = p1.restrictedTraverse('@@view')
+        sessions = view.sessions()
+        self.assertEquals(0, len(sessions))
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

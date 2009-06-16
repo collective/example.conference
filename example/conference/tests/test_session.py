@@ -1,0 +1,60 @@
+import unittest
+
+from zope.component import createObject
+from zope.component import queryUtility
+
+from plone.dexterity.interfaces import IDexterityFTI
+
+from Products.PloneTestCase.ptc import PloneTestCase
+from example.conference.tests.layer import Layer
+
+from example.conference.session import ISession
+from example.conference.session import possible_tracks
+
+class TestSessionIntegration(PloneTestCase):
+    
+    layer = Layer
+    
+    def test_adding(self):
+        
+        # We can't add this directly
+        self.assertRaises(ValueError, self.folder.invokeFactory, 'example.conference.session', 'session1')
+        
+        self.folder.invokeFactory('example.conference.program', 'program1')
+        p1 = self.folder['program1']
+        
+        p1.invokeFactory('example.conference.session', 'session1')
+        s1 = p1['session1']
+        self.failUnless(ISession.providedBy(s1))
+    
+    def test_fti(self):
+        fti = queryUtility(IDexterityFTI, name='example.conference.session')
+        self.assertNotEquals(None, fti)
+    
+    def test_schema(self):
+        fti = queryUtility(IDexterityFTI, name='example.conference.session')
+        schema = fti.lookup_schema()
+        self.assertEquals(ISession, schema)
+    
+    def test_factory(self):
+        fti = queryUtility(IDexterityFTI, name='example.conference.session')
+        factory = fti.factory
+        new_object = createObject(factory)
+        self.failUnless(ISession.providedBy(new_object))
+    
+    def test_tracks_vocabulary(self):
+        self.folder.invokeFactory('example.conference.program', 'program1')
+        p1 = self.folder['program1']
+        p1.tracks = ['T1', 'T2', 'T3']
+        
+        p1.invokeFactory('example.conference.session', 'session1')
+        s1 = p1['session1']
+        
+        vocab = possible_tracks(s1)
+        
+        self.assertEquals(['T1', 'T2', 'T3'], [t.value for t in vocab])
+        self.assertEquals(['T1', 'T2', 'T3'], [t.token for t in vocab])
+        
+
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)

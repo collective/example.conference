@@ -3,11 +3,10 @@ import collective.testcaselayer.ptc
 
 ptc.setupPloneSite()
 
-class _Layer(collective.testcaselayer.ptc.BasePTCLayer):
-    """Test case layer for functional testing.
-    """
+class IntegrationTestLayer(collective.testcaselayer.ptc.BasePTCLayer):
 
     def afterSetUp(self):
+        # Install the example.conference product
         self.addProfile('example.conference:default')
 
-Layer = _Layer([collective.testcaselayer.ptc.ptc_layer])
+Layer = IntegrationTestLayer([collective.testcaselayer.ptc.ptc_layer])

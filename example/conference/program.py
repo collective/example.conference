@@ -5,6 +5,9 @@ from zope.interface import invariant, Invalid
 from five import grok
 from zope import schema
 
+from DateTime import DateTime
+from plone.indexer import indexer
+
 from plone.directives import form, dexterity
 from plone.app.z3cform.wysiwyg import WysiwygFieldWidget
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
@@ -69,7 +72,6 @@ class IProgram(form.Schema):
         if data.start is not None and data.end is not None:
             if data.start > data.end:
                 raise StartBeforeEnd(_(u"The start date must be before the end date."))
-        
 
 @form.default_value(field=IProgram['start'])
 def start_default_value(data):
@@ -81,6 +83,29 @@ def start_default_value(data):
 def end_default_value(data):
     # To get hold of the folder, do: context = data.context
     return datetime.datetime.today() + datetime.timedelta(10)
+
+# Indexers
+
+@indexer(IProgram)
+def start_indexer(obj):
+    if obj.start is None:
+        return None
+    return DateTime(obj.start.isoformat())
+grok.global_adapter(start_indexer, name="start")
+
+@indexer(IProgram)
+def end_indexer(obj):
+    if obj.end is None:
+        return None
+    return DateTime(obj.end.isoformat())
+grok.global_adapter(end_indexer, name="end")
+
+@indexer(IProgram)
+def tracks_indexer(obj):
+    return obj.tracks
+grok.global_adapter(tracks_indexer, name="Subjec")
+
+# Views
 
 class View(grok.View):
     grok.context(IProgram)

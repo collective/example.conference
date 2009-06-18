@@ -54,7 +54,20 @@ class TestSessionIntegration(PloneTestCase):
         
         self.assertEquals(['T1', 'T2', 'T3'], [t.value for t in vocab])
         self.assertEquals(['T1', 'T2', 'T3'], [t.token for t in vocab])
+    
+    def test_catalog_index_metadata(self):
+        self.failUnless('track' in self.portal.portal_catalog.indexes())
+        self.failUnless('track' in self.portal.portal_catalog.schema())
+    
+    def test_workflow_installed(self):
+        self.folder.invokeFactory('example.conference.program', 'program1')
+        p1 = self.folder['program1']
         
+        p1.invokeFactory('example.conference.session', 'session1')
+        s1 = p1['session1']
+        
+        chain = self.portal.portal_workflow.getChainFor(s1)
+        self.assertEquals(('example.conference.session_workflow',), chain)
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

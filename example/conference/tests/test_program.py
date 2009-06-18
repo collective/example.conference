@@ -1,6 +1,8 @@
 import unittest
 import datetime
 
+from DateTime import DateTime
+
 from zope.component import createObject
 from zope.component import queryUtility
 
@@ -94,6 +96,30 @@ class TestProgramIntegration(PloneTestCase):
         view = p1.restrictedTraverse('@@view')
         sessions = view.sessions()
         self.assertEquals(0, len(sessions))
-
+    
+    def test_start_end_dates_indexed(self):
+        self.folder.invokeFactory('example.conference.program', 'program1')
+        p1 = self.folder['program1']
+        p1.start = datetime.datetime(2009, 1, 1, 14, 01)
+        p1.end = datetime.datetime(2009, 1, 2, 15, 02)
+        p1.reindexObject()
+        
+        result = self.portal.portal_catalog(path='/'.join(p1.getPhysicalPath()))
+        
+        self.assertEquals(1, len(result))
+        self.assertEquals(result[0].start, DateTime('2009-01-01T14:01:00'))
+        self.assertEquals(result[0].end, DateTime('2009-01-02T15:02:00'))
+    
+    def test_tracks_indexed(self):
+        self.folder.invokeFactory('example.conference.program', 'program1')
+        p1 = self.folder['program1']
+        p1.tracks = ['Track 1', 'Track 2']
+        p1.reindexObject()
+        
+        result = self.portal.portal_catalog(Subject='Track 2')
+        
+        self.assertEquals(1, len(result))
+        self.assertEquals(result[0].getURL(), p1.absolute_url())
+    
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

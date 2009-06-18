@@ -103,7 +103,7 @@ grok.global_adapter(end_indexer, name="end")
 @indexer(IProgram)
 def tracks_indexer(obj):
     return obj.tracks
-grok.global_adapter(tracks_indexer, name="Subjec")
+grok.global_adapter(tracks_indexer, name="Subject")
 
 # Views
 

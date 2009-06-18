@@ -5,6 +5,7 @@
     i18n_domain="example.conference">
 
     <include package="collective.autopermission" />
+    <include package="collective.wtf" />
     
     <include package="plone.principalsource" />
     <include package="plone.namedfile" />

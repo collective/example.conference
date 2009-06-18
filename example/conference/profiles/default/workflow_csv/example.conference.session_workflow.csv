@@ -1,0 +1,60 @@
+"[Workflow]"
+"Id:","example.conference.session_workflow"
+"Title:","Conference session workflow"
+"Description:","Allows members to submit session proposals for review"
+"Initial state:","draft"
+
+"[State]"
+"Id:","draft"
+"Title:","Draft"
+"Description:","The proposal is being drafted."
+"Transitions","submit"
+"Permissions","Acquire","Anonymous","Authenticated","Member","Manager","Owner","Editor","Reader","Contributor","Reviewer"
+"View","N",,,,"X","X","X","X",,
+"Access contents information","N",,,,"X","X","X","X",,
+"Modify portal content","N",,,,"X","X","X",,,
+
+
+"[State]"
+"Id:","pending"
+"Title:","Pending"
+"Description:","The proposal is pending review"
+"Worklist:","Pending review"
+"Worklist label:","Conference sessions pending review"
+"Worklist guard permission:","Review portal content"
+"Transitions:","reject, publish"
+"Permissions","Acquire","Anonymous","Authenticated","Member","Manager","Owner","Editor","Reader","Contributor","Reviewer"
+"View","N",,,,"X","X","X","X",,"X"
+"Access contents information","N",,,,"X","X","X","X",,"X"
+"Modify portal content","N",,,,"X","X","X",,,"X"
+
+"[State]"
+"Id:","published"
+"Title:","Published"
+"Description:","The proposal has been accepted"
+"Transitions:","reject"
+"Permissions","Acquire","Anonymous","Authenticated","Member","Manager","Owner","Editor","Reader","Contributor","Reviewer"
+"View","Y","X",,,,,,,,
+"Access contents information","Y","X",,,,,,,,
+"Modify portal content","Y",,,,"X","X","X",,,
+
+"[Transition]"
+"Id:","submit"
+"Title:","Submit"
+"Description:","Submit the session for review"
+"Target state:","pending"
+"Guard permission:","Request review"
+
+"[Transition]"
+"Id:","reject"
+"Title:","Reject"
+"Description:","Reject the session from the program"
+"Target state:","draft"
+"Guard permission:","Review portal content"
+
+"[Transition]"
+"Id:","publish"
+"Title:","Publish"
+"Description:","Accept and publish the session proposal"
+"Target state:","published"
+"Guard permission:","Review portal content"

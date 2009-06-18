@@ -32,6 +32,7 @@ setup(name='example.conference',
           'plone.namedfile',
           'plone.formwidget.namedfile',
           'collective.testcaselayer',
+          'collective.wtf',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]

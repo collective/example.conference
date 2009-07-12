@@ -33,6 +33,7 @@ setup(name='example.conference',
           'plone.formwidget.namedfile',
           'collective.testcaselayer',
           'collective.wtf',
+          'plone.mocktestcase',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]

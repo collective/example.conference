@@ -1,7 +1,11 @@
 import unittest
 
+from plone.mocktestcase import MockTestCase
+
 from zope.component import createObject
 from zope.component import queryUtility
+
+from zope.app.container.contained import ObjectAddedEvent
 
 from plone.dexterity.interfaces import IDexterityFTI
 
@@ -9,6 +13,59 @@ from Products.PloneTestCase.ptc import PloneTestCase
 from example.conference.tests.layer import Layer
 
 from example.conference.presenter import IPresenter
+from example.conference.presenter import notifyUser
+
+class TestPresenterMock(MockTestCase):
+    
+    def test_notify_user(self):
+        
+        # dummy presenter
+        presenter = self.create_dummy(
+                __parent__=None,
+                __name__=None,
+                title="Jim",
+                absolute_url = lambda: 'http://example.org/presenter',
+            )
+        
+        # dummy event
+        event = ObjectAddedEvent(presenter)
+        
+        # search result for acl_users
+        user_info = [{'email': 'jim@example.org', 'id': 'jim'}]
+        
+        # email data
+        message = "A presenter called Jim was added here http://example.org/presenter"
+        email = "jim@example.org"
+        sender = "test@example.org"
+        subject = "Is this you?"
+        
+        # mock tools/portal
+        
+        portal_mock = self.mocker.mock()
+        self.expect(portal_mock.getProperty('email_from_address')).result('test@example.org')
+        
+        portal_url_mock = self.mocker.mock()
+        self.mock_tool(portal_url_mock, 'portal_url')
+        self.expect(portal_url_mock.getPortalObject()).result(portal_mock)
+        
+        acl_users_mock = self.mocker.mock()
+        self.mock_tool(acl_users_mock, 'acl_users')
+        self.expect(acl_users_mock.searchUsers(fullname='Jim')).result(user_info)
+        
+        mail_host_mock = self.mocker.mock()
+        self.mock_tool(mail_host_mock, 'MailHost')
+        self.expect(mail_host_mock.secureSend(message, email, sender, subject))
+        
+        
+        # put mock framework into replay mode
+        self.replay()
+        
+        # call the method under test
+        notifyUser(presenter, event)
+
+        # we could make additional assertions here, e.g. if the function
+        # returned something. The mock framework will verify the assertions
+        # about expected call sequences.
 
 class TestPresenterIntegration(PloneTestCase):
     

@@ -35,7 +35,7 @@ class IPresenter(form.Schema):
         )
 
 @grok.subscribe(IPresenter, IObjectAddedEvent)
-def notify_user(presenter, event):
+def notifyUser(presenter, event):
     acl_users = getToolByName(presenter, 'acl_users')
     mail_host = getToolByName(presenter, 'MailHost')
     portal_url = getToolByName(presenter, 'portal_url')

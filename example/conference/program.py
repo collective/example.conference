@@ -68,42 +68,42 @@ class IProgram(form.Schema):
         )
     
     @invariant
-    def validate_start_end(data):
+    def validateStartEnd(data):
         if data.start is not None and data.end is not None:
             if data.start > data.end:
                 raise StartBeforeEnd(_(u"The start date must be before the end date."))
 
 @form.default_value(field=IProgram['start'])
-def start_default_value(data):
+def startDefaultValue(data):
     # To get hold of the folder, do: context = data.context
     return datetime.datetime.today() + datetime.timedelta(7)
 
 
 @form.default_value(field=IProgram['end'])
-def end_default_value(data):
+def endDefaultValue(data):
     # To get hold of the folder, do: context = data.context
     return datetime.datetime.today() + datetime.timedelta(10)
 
 # Indexers
 
 @indexer(IProgram)
-def start_indexer(obj):
+def startIndexer(obj):
     if obj.start is None:
         return None
     return DateTime(obj.start.isoformat())
-grok.global_adapter(start_indexer, name="start")
+grok.global_adapter(startIndexer, name="start")
 
 @indexer(IProgram)
-def end_indexer(obj):
+def endIndexer(obj):
     if obj.end is None:
         return None
     return DateTime(obj.end.isoformat())
-grok.global_adapter(end_indexer, name="end")
+grok.global_adapter(endIndexer, name="end")
 
 @indexer(IProgram)
-def tracks_indexer(obj):
+def tracksIndexer(obj):
     return obj.tracks
-grok.global_adapter(tracks_indexer, name="Subject")
+grok.global_adapter(tracksIndexer, name="Subject")
 
 # Views
 

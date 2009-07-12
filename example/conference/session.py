@@ -20,7 +20,7 @@ from example.conference import _
 from example.conference.presenter import IPresenter
 
 @grok.provider(IContextSourceBinder)
-def possible_tracks(context):
+def possibleTracks(context):
     
     # we put the import here to avoid a circular import
     from example.conference.program import IProgram
@@ -63,7 +63,7 @@ class ISession(form.Schema):
     dexterity.write_permission(track='example.conference.ModifyTrack')
     track = schema.Choice(
             title=_(u"Track"),
-            source=possible_tracks,
+            source=possibleTracks,
             required=False,
         )
 
@@ -71,5 +71,5 @@ class View(dexterity.DisplayForm):
     grok.context(ISession)
     grok.require('zope2.View')
     
-    def can_request_review(self):
+    def canRequestReview(self):
         return checkPermission('cmf.RequestReview', self.context)

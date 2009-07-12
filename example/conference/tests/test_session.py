@@ -9,7 +9,7 @@ from Products.PloneTestCase.ptc import PloneTestCase
 from example.conference.tests.layer import Layer
 
 from example.conference.session import ISession
-from example.conference.session import possible_tracks
+from example.conference.session import possibleTracks
 
 class TestSessionIntegration(PloneTestCase):
     
@@ -50,7 +50,7 @@ class TestSessionIntegration(PloneTestCase):
         p1.invokeFactory('example.conference.session', 'session1')
         s1 = p1['session1']
         
-        vocab = possible_tracks(s1)
+        vocab = possibleTracks(s1)
         
         self.assertEquals(['T1', 'T2', 'T3'], [t.value for t in vocab])
         self.assertEquals(['T1', 'T2', 'T3'], [t.token for t in vocab])

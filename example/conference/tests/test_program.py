@@ -11,8 +11,8 @@ from plone.dexterity.interfaces import IDexterityFTI
 from Products.PloneTestCase.ptc import PloneTestCase
 from example.conference.tests.layer import Layer
 
-from example.conference.program import start_default_value
-from example.conference.program import end_default_value
+from example.conference.program import startDefaultValue
+from example.conference.program import endDefaultValue
 from example.conference.program import IProgram
 from example.conference.program import StartBeforeEnd
 
@@ -23,14 +23,14 @@ class TestProgramUnit(unittest.TestCase):
     
     def test_start_defaults(self):
         data = MockProgram()
-        default_value = start_default_value(data)
+        default_value = startDefaultValue(data)
         today = datetime.datetime.today()
         delta = default_value - today
         self.assertEquals(6, delta.days)
 
     def test_end_default(self):
         data = MockProgram()
-        default_value = end_default_value(data)
+        default_value = endDefaultValue(data)
         today = datetime.datetime.today()
         delta = default_value - today
         self.assertEquals(9, delta.days)

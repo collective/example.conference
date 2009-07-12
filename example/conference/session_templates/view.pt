@@ -15,7 +15,7 @@
 
         <h1 class="documentFirstHeading" tal:content="context/title" />
         
-        <div class="discreet" tal:condition="view/can_request_review" i18n:translate="suggest_review">
+        <div class="discreet" tal:condition="view/canRequestReview" i18n:translate="suggest_review">
             Please submit this for review.
         </div>
         

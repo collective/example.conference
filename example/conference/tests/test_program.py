@@ -81,7 +81,7 @@ class TestProgramIntegration(PloneTestCase):
     
     def test_schema(self):
         fti = queryUtility(IDexterityFTI, name='example.conference.program')
-        schema = fti.lookup_schema()
+        schema = fti.lookupSchema()
         self.assertEquals(IProgram, schema)
     
     def test_factory(self):

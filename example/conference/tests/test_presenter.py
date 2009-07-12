@@ -25,7 +25,7 @@ class TestPresenterIntegration(PloneTestCase):
     
     def test_schema(self):
         fti = queryUtility(IDexterityFTI, name='example.conference.presenter')
-        schema = fti.lookup_schema()
+        schema = fti.lookupSchema()
         self.assertEquals(IPresenter, schema)
     
     def test_factory(self):

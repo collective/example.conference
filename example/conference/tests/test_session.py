@@ -33,7 +33,7 @@ class TestSessionIntegration(PloneTestCase):
     
     def test_schema(self):
         fti = queryUtility(IDexterityFTI, name='example.conference.session')
-        schema = fti.lookup_schema()
+        schema = fti.lookupSchema()
         self.assertEquals(ISession, schema)
     
     def test_factory(self):

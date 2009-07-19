@@ -62,7 +62,7 @@ class IProgram(form.Schema):
     form.widget(tracks=TextLinesFieldWidget)
     tracks = schema.List(
             title=_(u"Tracks"),
-            required=False,
+            required=True,
             default=[],
             value_type=schema.TextLine(),
         )

@@ -28,7 +28,7 @@ def possibleTracks(context):
         context = aq_parent(aq_inner(context))
     
     values = []
-    if context is not None:
+    if context is not None and context.tracks:
         values = context.tracks
     
     return SimpleVocabulary.fromValues(values)

@@ -4,13 +4,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="example.conference">
 
-    <include package="collective.autopermission" />
-    <include package="collective.wtf" />
-    
-    <include package="plone.principalsource" />
-    <include package="plone.namedfile" />
-    <include package="plone.formwidget.namedfile" />
-    
+    <includeDependencies package="." />
     <include file="permissions.zcml" />
 
     <!-- Grok the package to initialise schema interfaces and content classes -->

@@ -4,7 +4,9 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="example.conference">
 
+    <!-- Include configuration for dependencies listed in setup.py -->
     <includeDependencies package="." />
+    
     <include file="permissions.zcml" />
 
     <!-- Grok the package to initialise schema interfaces and content classes -->

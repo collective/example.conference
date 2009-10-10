@@ -39,7 +39,7 @@
                 />
         </div>
 
-        <div tal:content="structure context/bio" />
+        <div tal:content="structure context/bio/output" />
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
 

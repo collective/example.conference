@@ -9,7 +9,8 @@ from DateTime import DateTime
 from plone.indexer import indexer
 
 from plone.directives import form, dexterity
-from plone.app.z3cform.wysiwyg import WysiwygFieldWidget
+from plone.app.textfield import RichText
+
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
 from plone.z3cform.textlines.textlines import TextLinesFieldWidget
 
@@ -45,8 +46,7 @@ class IProgram(form.Schema):
             required=False,
         )
     
-    form.widget(details=WysiwygFieldWidget)
-    details = schema.Text(
+    details = RichText(
             title=_(u"Details"),
             description=_(u"Details about the program"),
             required=False,

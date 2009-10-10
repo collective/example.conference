@@ -8,7 +8,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.security import checkPermission
 
 from plone.directives import form, dexterity
-from plone.app.z3cform.wysiwyg import WysiwygFieldWidget
+from plone.app.textfield import RichText
 
 from z3c.relationfield.schema import RelationChoice
 from plone.formwidget.contenttree import ObjPathSourceBinder
@@ -46,8 +46,7 @@ class ISession(form.Schema):
             title=_(u"Session summary"),
         )
     
-    form.widget(details=WysiwygFieldWidget)
-    details = schema.Text(
+    details = RichText(
             title=_(u"Session details"),
             required=False
         )

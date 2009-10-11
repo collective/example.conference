@@ -2,14 +2,14 @@ from five import grok
 from zope import schema
 
 from plone.directives import form, dexterity
+
 from plone.app.textfield import RichText
+from plone.namedfile.field import NamedImage
 
 from zope.app.container.interfaces import IObjectAddedEvent
 from Products.CMFCore.utils import getToolByName
 
 from example.conference import _
-
-from plone.namedfile.field import NamedImage
 
 class IPresenter(form.Schema):
     """A conference presenter. Presenters can be added anywhere.

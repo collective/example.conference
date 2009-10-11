@@ -5,6 +5,11 @@ from zope.interface import invariant, Invalid
 from five import grok
 from zope import schema
 
+from zope.component import createObject
+from zope.event import notify
+from zope.lifecycleevent import ObjectCreatedEvent
+from zope.filerepresentation.interfaces import IFileFactory
+
 from DateTime import DateTime
 from plone.indexer import indexer
 
@@ -46,6 +51,7 @@ class IProgram(form.Schema):
             required=False,
         )
     
+    form.primary('details')
     details = RichText(
             title=_(u"Details"),
             description=_(u"Details about the program"),
@@ -121,3 +127,17 @@ class View(grok.View):
         return catalog(object_provides=ISession.__identifier__,
                        path='/'.join(context.getPhysicalPath()),
                        sort_order='sortable_title')
+
+# File representation
+
+class ProgramFileFactory(grok.Adapter):
+    """Custom file factory for programs, which always creates a Session.
+    """
+    
+    grok.implements(IFileFactory)
+    grok.context(IProgram)
+    
+    def __call__(self, name, contentType, data):
+        session = createObject('example.conference.session')
+        notify(ObjectCreatedEvent(session))
+        return session

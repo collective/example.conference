@@ -46,6 +46,7 @@ class ISession(form.Schema):
             title=_(u"Session summary"),
         )
     
+    form.primary('details')
     details = RichText(
             title=_(u"Session details"),
             required=False

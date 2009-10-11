@@ -23,11 +23,13 @@ class IPresenter(form.Schema):
             title=_(u"A short summary"),
         )
     
+    form.primary('bio')
     bio = RichText(
             title=_(u"Bio"),
             required=False
         )
     
+    form.primary('picture')
     picture = NamedImage(
             title=_(u"Picture"),
             description=_(u"Please upload an image"),

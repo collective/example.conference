@@ -6,6 +6,8 @@ from DateTime import DateTime
 from zope.component import createObject
 from zope.component import queryUtility
 
+from zope.filerepresentation.interfaces import IFileFactory
+
 from plone.dexterity.interfaces import IDexterityFTI
 
 from Products.PloneTestCase.ptc import PloneTestCase
@@ -15,6 +17,8 @@ from example.conference.program import startDefaultValue
 from example.conference.program import endDefaultValue
 from example.conference.program import IProgram
 from example.conference.program import StartBeforeEnd
+
+from example.conference.session import ISession
 
 class MockProgram(object):
     pass
@@ -120,6 +124,13 @@ class TestProgramIntegration(PloneTestCase):
         
         self.assertEquals(1, len(result))
         self.assertEquals(result[0].getURL(), p1.absolute_url())
+    
+    def test_file_factory(self):
+        self.folder.invokeFactory('example.conference.program', 'p1')
+        p1 = self.folder['p1']
+        fileFactory = IFileFactory(p1)
+        newObject = fileFactory('new-session', 'text/plain', 'dummy')
+        self.failUnless(ISession.providedBy(newObject))
     
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

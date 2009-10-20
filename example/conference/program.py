@@ -17,7 +17,7 @@ from plone.directives import form, dexterity
 from plone.app.textfield import RichText
 
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
-from plone.z3cform.textlines.textlines import TextLinesFieldWidget
+from z3c.form.browser.textlines import TextLinesFieldWidget
 
 from example.conference import _
 

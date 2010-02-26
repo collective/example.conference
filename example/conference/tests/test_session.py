@@ -20,7 +20,11 @@ class TestSessionIntegration(PloneTestCase):
     def test_adding(self):
         
         # We can't add this directly
-        self.assertRaises(Unauthorized, self.folder.invokeFactory, 'example.conference.session', 'session1')
+        try:
+            self.folder.invokeFactory('example.conference.session', 'session1')
+            self.fail('Conference sessions should not be addable except within conference programs.')
+        except (ValueError, Unauthorized):
+            pass
         
         self.folder.invokeFactory('example.conference.program', 'program1')
         p1 = self.folder['program1']

@@ -1,5 +1,7 @@
 import unittest
 
+from zExceptions import Unauthorized
+
 from zope.component import createObject
 from zope.component import queryUtility
 
@@ -18,7 +20,7 @@ class TestSessionIntegration(PloneTestCase):
     def test_adding(self):
         
         # We can't add this directly
-        self.assertRaises(ValueError, self.folder.invokeFactory, 'example.conference.session', 'session1')
+        self.assertRaises(Unauthorized, self.folder.invokeFactory, 'example.conference.session', 'session1')
         
         self.folder.invokeFactory('example.conference.program', 'program1')
         p1 = self.folder['program1']

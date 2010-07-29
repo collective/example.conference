@@ -34,6 +34,7 @@ setup(name='example.conference',
           'collective.testcaselayer',
           'collective.wtf',
           'plone.mocktestcase',
+          'plone.app.drafts',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]

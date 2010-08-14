@@ -23,8 +23,9 @@
  <!-- enabled behaviors -->
  <property name="behaviors">
      <element value="plone.app.content.interfaces.INameFromTitle" />
-     <element value="plone.app.drafts.interfaces.IDexterityDraftable" />
-     <element value="plone.app.dexterity.behaviors.drafts.IDexterityDraftSaveBehavior" />
+     <element value="plone.app.drafts.interfaces.IDraftable" />
+     <element value="plone.app.dexterity.behaviors.drafts.IDraftSaveBehavior" />
+     <element value="dexterity.draftspreviewbehavior.IDraftPreviewBehavior" />
  </property>
  
  <!-- View information -->

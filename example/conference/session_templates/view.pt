@@ -14,11 +14,11 @@
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 class="documentFirstHeading" tal:content="context/title" />
-        
+
         <div class="discreet" tal:condition="view/canRequestReview" i18n:translate="suggest_review">
             Please submit this for review.
         </div>
-        
+
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
         <p class="documentDescription" tal:content="context/description" />
@@ -27,14 +27,14 @@
             <label i18n:translate="track">Track:</label>
             <span tal:content="context/track" />
         </div>
-        
+
         <div tal:condition="context/presenter">
             <label i18n:translate="presenter">Presenter:</label>
             <span tal:content="context/presenter/to_object/Title | nothing" />
         </div>
-        
+
         <div tal:replace="structure provider:plone.abovecontentbody" />
-        
+
         <div tal:content="structure view/w/details/render" />
 
         <div tal:replace="structure provider:plone.belowcontentbody" />

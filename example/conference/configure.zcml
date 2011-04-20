@@ -6,7 +6,7 @@
 
     <!-- Include configuration for dependencies listed in setup.py -->
     <includeDependencies package="." />
-    
+
     <include file="permissions.zcml" />
 
     <!-- Grok the package to initialise schema interfaces and content classes -->
@@ -20,5 +20,5 @@
         directory="profiles/default"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
-        
+
 </configure>

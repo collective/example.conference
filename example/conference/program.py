@@ -32,15 +32,15 @@ class StartBeforeEnd(Invalid):
 class IProgram(form.Schema):
     """A conference program. Programs can contain Sessions.
     """
-    
+
     title = schema.TextLine(
             title=_(u"Program name"),
         )
-    
+
     description = schema.Text(
             title=_(u"Program summary"),
         )
-    
+
     start = schema.Datetime(
             title=_(u"Start date"),
             required=False,
@@ -50,21 +50,21 @@ class IProgram(form.Schema):
             title=_(u"End date"),
             required=False,
         )
-    
+
     form.primary('details')
     details = RichText(
             title=_(u"Details"),
             description=_(u"Details about the program"),
             required=False,
         )
-    
+
     form.widget(organizer=AutocompleteFieldWidget)
     organizer = schema.Choice(
             title=_(u"Organiser"),
             vocabulary=u"plone.principalsource.Users",
             required=False,
         )
-    
+
     form.widget(tracks=TextLinesFieldWidget)
     tracks = schema.List(
             title=_(u"Tracks"),
@@ -72,7 +72,7 @@ class IProgram(form.Schema):
             default=[],
             value_type=schema.TextLine(),
         )
-    
+
     @invariant
     def validateStartEnd(data):
         if data.start is not None and data.end is not None:
@@ -116,14 +116,14 @@ grok.global_adapter(tracksIndexer, name="Subject")
 class View(grok.View):
     grok.context(IProgram)
     grok.require('zope2.View')
-    
+
     def sessions(self):
         """Return a catalog search result of sessions to show
         """
-        
+
         context = aq_inner(self.context)
         catalog = getToolByName(context, 'portal_catalog')
-        
+
         return catalog(object_provides=ISession.__identifier__,
                        path='/'.join(context.getPhysicalPath()),
                        sort_order='sortable_title')
@@ -133,10 +133,10 @@ class View(grok.View):
 class ProgramFileFactory(grok.Adapter):
     """Custom file factory for programs, which always creates a Session.
     """
-    
+
     grok.implements(IFileFactory)
     grok.context(IProgram)
-    
+
     def __call__(self, name, contentType, data):
         session = createObject('example.conference.session')
         notify(ObjectCreatedEvent(session))

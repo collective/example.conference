@@ -8,7 +8,7 @@
 
 <head>
     <metal:block fill-slot="style_slot">
-        <link rel="stylesheet" type="text/css" 
+        <link rel="stylesheet" type="text/css"
             tal:define="navroot context/@@plone_portal_state/navigation_root_url"
             tal:attributes="href string:${navroot}/++resource++example.conference/conference.css"
             />
@@ -23,7 +23,7 @@
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
         <h1 class="documentFirstHeading" tal:content="context/title" />
-        
+
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
         <p class="documentDescription" tal:content="context/description" />

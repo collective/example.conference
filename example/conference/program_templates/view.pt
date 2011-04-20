@@ -19,7 +19,7 @@
              />
 
         <h1 class="documentFirstHeading" tal:content="context/title" />
-            
+
         <div class="discreet">
             <tal:block condition="context/start">
                 <span i18n:translate="label_from">From:</span>
@@ -38,7 +38,7 @@
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
         <div tal:content="structure context/details/output" />
-        
+
         <h2 i18n:translate="heading_sessions">Sessions</h2>
         <dl>
             <tal:block repeat="session view/sessions">

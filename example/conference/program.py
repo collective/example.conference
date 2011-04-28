@@ -13,7 +13,7 @@ from zope.filerepresentation.interfaces import IFileFactory
 from DateTime import DateTime
 from plone.indexer import indexer
 
-from plone.directives import form, dexterity
+from plone.directives import form
 from plone.app.textfield import RichText
 
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
@@ -26,8 +26,39 @@ from Products.CMFCore.utils import getToolByName
 
 from example.conference.session import ISession
 
+from zope.interface import Interface
+#from collective.z3cform.datagridfield import DictRow
+#from plone.formwidget.contenttree import ObjPathSourceBinder
+#from z3c.relationfield.schema import RelationChoice
+#from collective.z3cform.datagridfield.datagridfield import \
+#     DataGridFieldFactory
+
+
+class IAddress(Interface):
+    # Interface to use when testing a datagrid field.  Not used by
+    # default, but kept here to ease testing.
+    address_type = schema.Choice(
+        title=u'Address Type', required=True,
+        values=[u'Work', u'Home'])
+    # A Relation field within a datagrid is a tricky one to get
+    # working.  Uncomment if you want to try this.
+    # link = RelationChoice(
+    #         title=u"Link to content",
+    #         source=ObjPathSourceBinder(),
+    #         required=True)
+    line1 = schema.TextLine(
+        title=u'Line 1', required=True)
+    line2 = schema.TextLine(
+        title=u'Line 2', required=False)
+    city = schema.TextLine(
+        title=u'City / Town', required=True)
+    country = schema.TextLine(
+        title=u'Country', required=True)
+
+
 class StartBeforeEnd(Invalid):
     __doc__ = _(u"The start or end date is invalid")
+
 
 class IProgram(form.Schema):
     """A conference program. Programs can contain Sessions.
@@ -40,6 +71,14 @@ class IProgram(form.Schema):
     description = schema.Text(
             title=_(u"Program summary"),
         )
+
+    # If you want to test a datagridfield, uncomment this.
+    #form.widget(address=DataGridFieldFactory)
+    # address = schema.List(
+    #     title=u'Addresses',
+    #     value_type=DictRow(title=u'Address', schema=IAddress),
+    #     required=True,
+    #    )
 
     start = schema.Datetime(
             title=_(u"Start date"),
@@ -77,7 +116,9 @@ class IProgram(form.Schema):
     def validateStartEnd(data):
         if data.start is not None and data.end is not None:
             if data.start > data.end:
-                raise StartBeforeEnd(_(u"The start date must be before the end date."))
+                raise StartBeforeEnd(_(
+                    u"The start date must be before the end date."))
+
 
 @form.default_value(field=IProgram['start'])
 def startDefaultValue(data):
@@ -92,12 +133,14 @@ def endDefaultValue(data):
 
 # Indexers
 
+
 @indexer(IProgram)
 def startIndexer(obj):
     if obj.start is None:
         return None
     return DateTime(obj.start.isoformat())
 grok.global_adapter(startIndexer, name="start")
+
 
 @indexer(IProgram)
 def endIndexer(obj):
@@ -106,10 +149,12 @@ def endIndexer(obj):
     return DateTime(obj.end.isoformat())
 grok.global_adapter(endIndexer, name="end")
 
+
 @indexer(IProgram)
 def tracksIndexer(obj):
     return obj.tracks
 grok.global_adapter(tracksIndexer, name="Subject")
+
 
 # Views
 
@@ -127,6 +172,7 @@ class View(grok.View):
         return catalog(object_provides=ISession.__identifier__,
                        path='/'.join(context.getPhysicalPath()),
                        sort_order='sortable_title')
+
 
 # File representation
 

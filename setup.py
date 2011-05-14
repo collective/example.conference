@@ -35,6 +35,15 @@ setup(name='example.conference',
           'collective.wtf',
           'plone.mocktestcase',
       ],
+      extras_require = {
+          # Test relations within datagrid fields.  Some of these do
+          # not yet have releases with the changes we need.
+          'datagrid': [
+              'collective.z3cform.datagridfield>0.5',
+              'plone.app.referenceablebehavior',
+              'plone.formwidget.contenttree>1.0',
+              ],
+          },
       entry_points="""
       [z3c.autoinclude.plugin]
       target = plone

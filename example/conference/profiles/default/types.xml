@@ -2,4 +2,5 @@
  <object name="example.conference.presenter" meta_type="Dexterity FTI" />
  <object name="example.conference.program" meta_type="Dexterity FTI" />
  <object name="example.conference.session" meta_type="Dexterity FTI" />
+ <object name="example.conference.attendee" meta_type="Dexterity FTI" />
 </object>

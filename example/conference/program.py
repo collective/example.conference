@@ -26,35 +26,6 @@ from Products.CMFCore.utils import getToolByName
 
 from example.conference.session import ISession
 
-from zope.interface import Interface
-#from collective.z3cform.datagridfield import DictRow
-#from plone.formwidget.contenttree import ObjPathSourceBinder
-#from z3c.relationfield.schema import RelationChoice
-#from collective.z3cform.datagridfield.datagridfield import \
-#     DataGridFieldFactory
-
-
-class IAddress(Interface):
-    # Interface to use when testing a datagrid field.  Not used by
-    # default, but kept here to ease testing.
-    address_type = schema.Choice(
-        title=u'Address Type', required=True,
-        values=[u'Work', u'Home'])
-    # A Relation field within a datagrid is a tricky one to get
-    # working.  Uncomment if you want to try this.
-    # link = RelationChoice(
-    #         title=u"Link to content",
-    #         source=ObjPathSourceBinder(),
-    #         required=True)
-    line1 = schema.TextLine(
-        title=u'Line 1', required=True)
-    line2 = schema.TextLine(
-        title=u'Line 2', required=False)
-    city = schema.TextLine(
-        title=u'City / Town', required=True)
-    country = schema.TextLine(
-        title=u'Country', required=True)
-
 
 class StartBeforeEnd(Invalid):
     __doc__ = _(u"The start or end date is invalid")
@@ -71,14 +42,6 @@ class IProgram(form.Schema):
     description = schema.Text(
             title=_(u"Program summary"),
         )
-
-    # If you want to test a datagridfield, uncomment this.
-    #form.widget(address=DataGridFieldFactory)
-    # address = schema.List(
-    #     title=u'Addresses',
-    #     value_type=DictRow(title=u'Address', schema=IAddress),
-    #     required=True,
-    #    )
 
     start = schema.Datetime(
             title=_(u"Start date"),

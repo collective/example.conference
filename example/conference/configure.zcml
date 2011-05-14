@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="example.conference">
 
@@ -19,6 +20,25 @@
         description="A Dexterity demo"
         directory="profiles/default"
         provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <!-- Special forms and views for Attendee, to be able to set
+         widgets in the datagridfield.  We could maybe register them
+         just for Attendees, but that would not help for the add-form,
+         although I don't think that is handled here yet.
+         See the aliases in types/example.conference.attendee.xml. -->
+    <browser:page
+        for="plone.dexterity.interfaces.IDexterityContent"
+        name="attendee_edit"
+        class=".attendee.DataGridEditView"
+        permission="cmf.ModifyPortalContent"
+        />
+
+    <browser:page
+        for="plone.dexterity.interfaces.IDexterityContent"
+        name="attendee_view"
+        class=".attendee.DataGridView"
+        permission="zope2.View"
         />
 
 </configure>

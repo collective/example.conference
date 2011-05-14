@@ -1,23 +1,21 @@
 <?xml version="1.0"?>
-<object name="example.conference.program" meta_type="Dexterity FTI"
+<object name="example.conference.attendee" meta_type="Dexterity FTI"
    i18n:domain="example.conference" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
  <!-- Basic metadata -->
- <property name="title" i18n:translate="">Program</property>
- <property name="description" i18n:translate="">A conference program</property>
- <property name="content_icon">++resource++example.conference/program.gif</property>
+ <property name="title" i18n:translate="">Attendee</property>
+ <property name="description" i18n:translate="">A person attending sessions</property>
+ <property name="content_icon">++resource++example.conference/presenter.gif</property>
  <property name="allow_discussion">True</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
- <property name="allowed_content_types">
-     <element value="example.conference.session" />
- </property>
+ <property name="allowed_content_types" />
 
  <!-- schema interface -->
- <property name="schema">example.conference.program.IProgram</property>
+ <property name="schema">example.conference.attendee.IAttendee</property>
 
  <!-- class used for content items -->
- <property name="klass">plone.dexterity.content.Container</property>
+ <property name="klass">plone.dexterity.content.Item</property>
 
  <!-- add permission -->
  <property name="add_permission">cmf.AddPortalContent</property>
@@ -37,10 +35,10 @@
  </property>
 
  <!-- Method aliases -->
- <alias from="(Default)" to="(selected layout)"/>
- <alias from="edit" to="@@edit"/>
+ <alias from="(Default)" to="attendee_view"/>
+ <alias from="edit" to="attendee_edit"/>
  <alias from="sharing" to="@@sharing"/>
- <alias from="view" to="@@view"/>
+ <alias from="view" to="attendee_view"/>
 
  <!-- Actions -->
  <action title="View" action_id="view" category="object" condition_expr=""

@@ -31,11 +31,10 @@ setup(name='example.conference',
           'plone.principalsource',
           'plone.namedfile',
           'plone.formwidget.namedfile',
-          'collective.testcaselayer',
           'collective.wtf',
-          'plone.mocktestcase',
       ],
       extras_require = {
+          'test':  ['collective.testcaselayer', 'plone.mocktestcase'],
           # Test relations within datagrid fields.  Some of these do
           # not yet have releases with the changes we need.
           'datagrid': [

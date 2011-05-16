@@ -4,6 +4,7 @@
 import os.path
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.dexterity.browser.add import DefaultAddView, DefaultAddForm
 from plone.dexterity.browser.edit import DefaultEditForm
 from plone.dexterity.browser.view import DefaultView
 from plone.directives import form
@@ -152,3 +153,20 @@ class DataGridView(DefaultView):
             subform.fields['presenter'].widgetFactory = ContentTreeFieldWidget
         elif widget.name == 'form.widgets.remarkables':
             subform.fields['content'].widgetFactory = ContentTreeFieldWidget
+
+
+class DatagridAddForm(DefaultAddForm):
+
+    def datagridInitialise(self, subform, widget):
+        if widget.name == 'form.widgets.presenters':
+            subform.fields['presenter'].widgetFactory = ContentTreeFieldWidget
+        elif widget.name == 'form.widgets.remarkables':
+            subform.fields['content'].widgetFactory = ContentTreeFieldWidget
+
+
+class DatagridAddView(DefaultAddView):
+    """Add-view that uses the ContentTreeWidget for some fields in the
+    datagrids.
+    """
+
+    form = DatagridAddForm

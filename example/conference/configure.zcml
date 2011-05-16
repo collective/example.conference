@@ -24,8 +24,7 @@
 
     <!-- Special forms and views for Attendee, to be able to set
          widgets in the datagridfield.  We could maybe register them
-         just for Attendees, but that would not help for the add-form,
-         although I don't think that is handled here yet.
+         just for Attendees, but that would not help for the add-form.
          See the aliases in types/example.conference.attendee.xml. -->
     <browser:page
         for="plone.dexterity.interfaces.IDexterityContent"
@@ -40,5 +39,20 @@
         class=".attendee.DataGridView"
         permission="zope2.View"
         />
+    <!-- Standard add view and form - invoked from ++add++ traverser -->
+    <adapter
+        for="Products.CMFCore.interfaces.IFolderish
+             Products.CMFDefault.interfaces.ICMFDefaultSkin
+             plone.dexterity.interfaces.IDexterityFTI"
+        provides="zope.publisher.interfaces.browser.IBrowserPage"
+        factory=".attendee.DatagridAddView"
+        name="example.conference.attendee"
+        />
+    <class class=".attendee.DatagridAddView">
+        <require
+            permission="cmf.AddPortalContent"
+            interface="zope.publisher.interfaces.browser.IBrowserPage"
+            />
+    </class>
 
 </configure>

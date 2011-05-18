@@ -26,7 +26,7 @@
  <property name="behaviors">
      <element value="plone.app.content.interfaces.INameFromTitle" />
      <element value="plone.app.drafts.interfaces.IDraftable" />
-     <element value="plone.app.dexterity.behaviors.drafts.IDraftSaveBehavior" />
+     <element value="plone.app.z3cformdrafts.interfaces.IDraftSaveBehavior" />
      <element value="plone.app.z3cformdrafts.interfaces.IDraftAutoSaveBehavior" />
      <element value="dexterity.draftspreviewbehavior.interfaces.IDraftPreviewBehavior" />
  </property>

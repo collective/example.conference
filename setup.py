@@ -31,6 +31,11 @@ setup(name='example.conference',
           'plone.namedfile',
           'plone.formwidget.namedfile',
           'collective.wtf',
+          # Next is not needed on Zope 2.12, but hard to add as an
+          # extra for Plone 3, given our current buildout configs
+          # where an 'eggs += example.conference [plone3]' would
+          # conflict with the 'eggs -=' that is already there.
+          'collective.autopermission',
       ],
       extras_require = {
           'test':  ['collective.testcaselayer', 'plone.mocktestcase'],

@@ -1,4 +1,4 @@
-import unittest
+import unittest2 as unittest
 import datetime
 
 from DateTime import DateTime
@@ -8,10 +8,10 @@ from zope.component import queryUtility
 
 from zope.filerepresentation.interfaces import IFileFactory
 
-from plone.dexterity.interfaces import IDexterityFTI
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 
-from Products.PloneTestCase.ptc import PloneTestCase
-from example.conference.tests.layer import Layer
+from plone.dexterity.interfaces import IDexterityFTI
 
 from example.conference.program import startDefaultValue
 from example.conference.program import endDefaultValue
@@ -20,8 +20,12 @@ from example.conference.program import StartBeforeEnd
 
 from example.conference.session import ISession
 
+from example.conference.testing import INTEGRATION_TESTING
+
+
 class MockProgram(object):
     pass
+
 
 class TestProgramUnit(unittest.TestCase):
 
@@ -70,9 +74,17 @@ class TestProgramUnit(unittest.TestCase):
         except:
             self.fail()
 
-class TestProgramIntegration(PloneTestCase):
 
-    layer = Layer
+class TestProgramIntegration(unittest.TestCase):
+
+    layer = INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', 'test-folder')
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
+        self.folder = self.portal['test-folder']
 
     def test_adding(self):
         self.folder.invokeFactory('example.conference.program', 'program1')
@@ -131,6 +143,7 @@ class TestProgramIntegration(PloneTestCase):
         fileFactory = IFileFactory(p1)
         newObject = fileFactory('new-session', 'text/plain', 'dummy')
         self.failUnless(ISession.providedBy(newObject))
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

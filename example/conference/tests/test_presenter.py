@@ -1,4 +1,4 @@
-import unittest
+import unittest2 as unittest
 
 from plone.mocktestcase import MockTestCase
 
@@ -7,13 +7,16 @@ from zope.component import queryUtility
 
 from zope.app.container.contained import ObjectAddedEvent
 
-from plone.dexterity.interfaces import IDexterityFTI
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 
-from Products.PloneTestCase.ptc import PloneTestCase
-from example.conference.tests.layer import Layer
+from plone.dexterity.interfaces import IDexterityFTI
 
 from example.conference.presenter import IPresenter
 from example.conference.presenter import notifyUser
+
+from example.conference.testing import INTEGRATION_TESTING
+
 
 class TestPresenterMock(MockTestCase):
 
@@ -24,7 +27,7 @@ class TestPresenterMock(MockTestCase):
                 __parent__=None,
                 __name__=None,
                 title="Jim",
-                absolute_url = lambda: 'http://example.org/presenter',
+                absolute_url=lambda: 'http://example.org/presenter',
             )
 
         # dummy event
@@ -56,7 +59,6 @@ class TestPresenterMock(MockTestCase):
         self.mock_tool(mail_host_mock, 'MailHost')
         self.expect(mail_host_mock.secureSend(message, email, sender, subject))
 
-
         # put mock framework into replay mode
         self.replay()
 
@@ -67,9 +69,17 @@ class TestPresenterMock(MockTestCase):
         # returned something. The mock framework will verify the assertions
         # about expected call sequences.
 
-class TestPresenterIntegration(PloneTestCase):
 
-    layer = Layer
+class TestPresenterIntegration(unittest.TestCase):
+
+    layer = INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', 'test-folder')
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
+        self.folder = self.portal['test-folder']
 
     def test_adding(self):
         self.folder.invokeFactory('example.conference.presenter', 'presenter1')
@@ -90,6 +100,7 @@ class TestPresenterIntegration(PloneTestCase):
         factory = fti.factory
         new_object = createObject(factory)
         self.failUnless(IPresenter.providedBy(new_object))
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

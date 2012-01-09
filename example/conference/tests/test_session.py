@@ -1,21 +1,31 @@
-import unittest
+import unittest2 as unittest
 
 from zExceptions import Unauthorized
 
 from zope.component import createObject
 from zope.component import queryUtility
 
-from plone.dexterity.interfaces import IDexterityFTI
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 
-from Products.PloneTestCase.ptc import PloneTestCase
-from example.conference.tests.layer import Layer
+from plone.dexterity.interfaces import IDexterityFTI
 
 from example.conference.session import ISession
 from example.conference.session import possibleTracks
 
-class TestSessionIntegration(PloneTestCase):
+from example.conference.testing import INTEGRATION_TESTING
 
-    layer = Layer
+
+class TestSessionIntegration(unittest.TestCase):
+
+    layer = INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', 'test-folder')
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
+        self.folder = self.portal['test-folder']
 
     def test_adding(self):
 
@@ -74,6 +84,7 @@ class TestSessionIntegration(PloneTestCase):
 
         chain = self.portal.portal_workflow.getChainFor(s1)
         self.assertEquals(('example.conference.session_workflow',), chain)
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

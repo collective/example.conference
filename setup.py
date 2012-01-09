@@ -6,7 +6,6 @@ version = '1.0a1'
 
 install_requires = [
     'setuptools',
-    'Plone',
     'plone.app.dexterity',
     'plone.principalsource',
     'plone.namedfile',
@@ -26,7 +25,7 @@ if sys.version_info < (2, 6):
 
 setup(name='example.conference',
       version=version,
-      description="Example accompanying http://plone.org/products/dexterity/documentation/manual/developers-manual/",
+      description="Example accompanying http://dexterity-developer-manual.readthedocs.org",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
@@ -47,7 +46,7 @@ setup(name='example.conference',
       zip_safe=False,
       install_requires=install_requires,
       extras_require={
-          'test':  ['collective.testcaselayer', 'plone.mocktestcase'],
+          'test':  ['plone.app.testing', 'plone.mocktestcase'],
           # Test relations within datagrid fields.  Some of these do
           # not yet have releases with the changes we need.
           'datagrid': [

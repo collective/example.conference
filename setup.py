@@ -12,15 +12,6 @@ install_requires = [
     'plone.formwidget.namedfile',
     'collective.wtf',
     ]
-if sys.version_info < (2, 6):
-    # collective.autopermission is not needed on Zope 2.12, but hard
-    # to add as an extra for Plone 3, given our current buildout
-    # configs where an 'eggs += example.conference [plone3]' would
-    # conflict with the 'eggs -=' that is already there.  As long as
-    # we don't actually release to PyPI (giving different results when
-    # creating an sdist with python2.4 or python2.6) this setup should
-    # be fine too.
-    install_requires.append('collective.autopermission')
 
 
 setup(name='example.conference',
@@ -54,7 +45,6 @@ setup(name='example.conference',
               'plone.app.referenceablebehavior',
               'plone.formwidget.contenttree>1.0',
               ],
-          'plone3': ['collective.autopermission'],
           },
       entry_points="""
       [z3c.autoinclude.plugin]

@@ -1,8 +1,6 @@
 # In here we test a few advanced tricks like relations and datagrid
 # fields.  Well, when the right stuff can be imported, anyway.
 
-import os.path
-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.dexterity.browser.add import DefaultAddView, DefaultAddForm
 from plone.dexterity.browser.edit import DefaultEditForm
@@ -10,8 +8,10 @@ from plone.dexterity.browser.view import DefaultView
 from plone.directives import form
 from plone.formwidget.contenttree import ContentTreeFieldWidget
 from plone.formwidget.contenttree import MultiContentTreeFieldWidget
+from plone.supermodel import model
 from zope import schema
 from zope.interface import Interface
+import os.path
 import plone.dexterity.browser
 
 # We try a few imports.  If these fail we won't be doing anything
@@ -20,7 +20,7 @@ import plone.dexterity.browser
 try:
     from collective.z3cform.datagridfield import DictRow
     from collective.z3cform.datagridfield.datagridfield import \
-         DataGridFieldFactory
+        DataGridFieldFactory
     DictRow  # pyflakes
     DataGridFieldFactory  # pyflakes
     USE_DATAGRID = True
@@ -34,7 +34,7 @@ try:
 except ImportError:
     # We won't be using this, but we need a sane source definition anyway.
     from plone.formwidget.contenttree import ObjPathSourceBinder as \
-         UUIDSourceBinder
+        UUIDSourceBinder
 
 from example.conference import _
 
@@ -61,13 +61,13 @@ class IRemarkable(Interface):
         title=_(u'Remark'), required=True)
 
 
-class IAttendee(form.Schema):
+class IAttendee(model.Schema):
     """A conference attendee.
     """
 
     title = schema.TextLine(
-            title=_(u"Full name"),
-        )
+        title=_(u"Full name"),
+    )
 
     # Simple choice based on uuid.
     form.widget(program=ContentTreeFieldWidget)

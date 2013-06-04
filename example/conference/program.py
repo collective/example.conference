@@ -1,79 +1,71 @@
-import datetime
-
-from zope.interface import invariant, Invalid
-
+from Acquisition import aq_inner
+from DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
+from example.conference import _
+from example.conference.session import ISession
 from five import grok
+from plone.app.textfield import RichText
+from plone.directives import form
+from plone.formwidget.autocomplete import AutocompleteFieldWidget
+from plone.indexer import indexer
+from plone.supermodel import model
+from z3c.form.browser.textlines import TextLinesFieldWidget
 from zope import schema
-
 from zope.component import createObject
 from zope.event import notify
-from zope.lifecycleevent import ObjectCreatedEvent
 from zope.filerepresentation.interfaces import IFileFactory
-
-from DateTime import DateTime
-from plone.indexer import indexer
-
-from plone.directives import form
-from plone.app.textfield import RichText
-
-from plone.formwidget.autocomplete import AutocompleteFieldWidget
-from z3c.form.browser.textlines import TextLinesFieldWidget
-
-from example.conference import _
-
-from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
-
-from example.conference.session import ISession
+from zope.interface import invariant, Invalid
+from zope.lifecycleevent import ObjectCreatedEvent
+import datetime
 
 
 class StartBeforeEnd(Invalid):
     __doc__ = _(u"The start or end date is invalid")
 
 
-class IProgram(form.Schema):
+class IProgram(model.Schema):
     """A conference program. Programs can contain Sessions.
     """
 
     title = schema.TextLine(
-            title=_(u"Program name"),
-        )
+        title=_(u"Program name"),
+    )
 
     description = schema.Text(
-            title=_(u"Program summary"),
-        )
+        title=_(u"Program summary"),
+    )
 
     start = schema.Datetime(
-            title=_(u"Start date"),
-            required=False,
-        )
+        title=_(u"Start date"),
+        required=False,
+    )
 
     end = schema.Datetime(
-            title=_(u"End date"),
-            required=False,
-        )
+        title=_(u"End date"),
+        required=False,
+    )
 
     form.primary('details')
     details = RichText(
-            title=_(u"Details"),
-            description=_(u"Details about the program"),
-            required=False,
-        )
+        title=_(u"Details"),
+        description=_(u"Details about the program"),
+        required=False,
+    )
 
     form.widget(organizer=AutocompleteFieldWidget)
     organizer = schema.Choice(
-            title=_(u"Organiser"),
-            vocabulary=u"plone.principalsource.Users",
-            required=False,
-        )
+        title=_(u"Organiser"),
+        vocabulary=u"plone.principalsource.Users",
+        required=False,
+    )
 
     form.widget(tracks=TextLinesFieldWidget)
     tracks = schema.List(
-            title=_(u"Tracks"),
-            required=True,
-            default=[],
-            value_type=schema.TextLine(),
-        )
+        title=_(u"Tracks"),
+        required=True,
+        default=[],
+        value_type=schema.TextLine(),
+    )
 
     @invariant
     def validateStartEnd(data):

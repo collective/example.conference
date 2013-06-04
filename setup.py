@@ -25,7 +25,7 @@ if sys.version_info < (2, 6):
 
 setup(name='example.conference',
       version=version,
-      description="Example accompanying http://dexterity-developer-manual.readthedocs.org",
+      description="Example accompanying http://developer.plone.org/reference_manuals/external/plone.app.dexterity/",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from

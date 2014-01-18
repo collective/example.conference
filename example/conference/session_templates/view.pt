@@ -28,6 +28,11 @@
             <span tal:content="context/track" />
         </div>
 
+        <div tal:condition="context/category">
+            <label i18n:translate="category">Category:</label>
+            <span tal:content="python:view.showTerm(context.category)" />
+        </div>
+
         <div tal:condition="context/presenter">
             <label i18n:translate="presenter">Presenter:</label>
             <span tal:content="context/presenter/to_object/Title | nothing" />

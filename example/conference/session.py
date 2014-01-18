@@ -9,8 +9,10 @@ from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.supermodel import model
 from z3c.relationfield.schema import RelationChoice
 from zope import schema
+from zope.interface import implements
+from z3c.formwidget.query.interfaces import IQuerySource
 from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope.security import checkPermission
 import plone.autoform.directives as form
 
@@ -28,6 +30,32 @@ def possibleTracks(context):
         values = context.tracks
 
     return SimpleVocabulary.fromValues(values)
+
+class CategorySource(object):
+    implements(IQuerySource)
+
+    vocabulary = SimpleVocabulary([
+        SimpleTerm(value='core', title=_(u'Core')),
+        SimpleTerm(value='web', title=_(u'Web Development')),
+        SimpleTerm(value='other', title=_(u'Other')),
+    ])
+
+    def __init__(self, context):
+        self.context = context
+
+    __contains__ = vocabulary.__contains__
+    __iter__ = vocabulary.__iter__
+    getTerm = vocabulary.getTerm
+    getTermByToken = vocabulary.getTermByToken
+
+    def search(self, query_string):
+        return [v for v in self if query_string.lower() in v.value.lower()]
+
+class CategorySourceBinder(object):
+    implements(IContextSourceBinder)
+
+    def __call__(self, context):
+        return CategorySource(context)
 
 
 class ISession(model.Schema):
@@ -65,6 +93,12 @@ class ISession(model.Schema):
         required=False,
     )
 
+    form.widget(category=AutocompleteFieldWidget)
+    category = schema.Choice(
+        title=_(u"Category"),
+        source=CategorySourceBinder(),
+        required=False,
+    )
 
 class View(dexterity.DisplayForm):
     grok.context(ISession)
@@ -72,3 +106,11 @@ class View(dexterity.DisplayForm):
 
     def canRequestReview(self):
         return checkPermission('cmf.RequestReview', self.context)
+
+    def showTerm(self, value):
+        try:
+            term = CategorySource.getTermByToken(value)
+            return term.title
+        except:
+            return None
+

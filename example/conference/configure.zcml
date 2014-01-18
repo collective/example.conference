@@ -55,4 +55,9 @@
             />
     </class>
 
+    <!-- Registering a static resource directory -->
+    <browser:resourceDirectory
+        name="example.conference"
+        directory="static" />
+
 </configure>

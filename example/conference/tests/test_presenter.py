@@ -5,7 +5,7 @@ from plone.mocktestcase import MockTestCase
 from zope.component import createObject
 from zope.component import queryUtility
 
-from zope.app.container.contained import ObjectAddedEvent
+from zope.container.contained import ObjectAddedEvent
 
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles

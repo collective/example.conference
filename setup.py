@@ -5,12 +5,18 @@ import sys
 version = '1.0a1'
 
 install_requires = [
-    'setuptools',
-    'plone.app.dexterity',
-    'plone.principalsource',
-    'plone.namedfile',
-    'plone.formwidget.namedfile',
     'collective.wtf',
+    'five.grok',
+    'plone.api',
+    'plone.app.dexterity',
+    'plone.directives.dexterity',
+    'plone.formwidget.autocomplete',
+    'plone.formwidget.contenttree',
+    'plone.formwidget.namedfile',
+    'plone.namedfile',
+    'plone.principalsource',
+    'setuptools',
+    'z3c.relationfield',
     ]
 
 
